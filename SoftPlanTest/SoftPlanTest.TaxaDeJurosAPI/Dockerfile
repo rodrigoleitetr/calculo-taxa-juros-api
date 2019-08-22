@@ -1,0 +1,22 @@
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM microsoft/dotnet:2.1-sdk AS build
+WORKDIR /src
+COPY ["SoftPlanTest.TaxaDeJurosAPI/SoftPlanTest.TaxaDeJurosAPI.csproj", "SoftPlanTest.TaxaDeJurosAPI/"]
+COPY ["SoftPlanTest.Lib/SoftPlanTest.Lib.csproj", "SoftPlanTest.Lib/"]
+COPY ["SoftPlanTest.Model/SoftPlanTest.Model.csproj", "SoftPlanTest.Model/"]
+RUN dotnet restore "SoftPlanTest.TaxaDeJurosAPI/SoftPlanTest.TaxaDeJurosAPI.csproj"
+COPY . .
+WORKDIR "/src/SoftPlanTest.TaxaDeJurosAPI"
+RUN dotnet build "SoftPlanTest.TaxaDeJurosAPI.csproj" -c Release -o /app
+
+FROM build AS publish
+RUN dotnet publish "SoftPlanTest.TaxaDeJurosAPI.csproj" -c Release -o /app
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet", "SoftPlanTest.TaxaDeJurosAPI.dll"]

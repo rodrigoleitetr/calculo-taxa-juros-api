@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SoftPlanTest.Lib.Services.TaxaDeJuros;
+using SoftPlanTest.Lib.TaxaDeJuros.Helper;
 using SoftPlanTest.Model.Config;
 using SoftPlanTest.Model.Repository.TaxaJuros;
 
@@ -34,6 +35,7 @@ namespace SoftPlanTest.TaxaDeJurosCalculoAPI
             services.Configure<CalculoTaxaDeJurosApiGeneralConfig>(options => Configuration.GetSection("General").Bind(options));
 
             // Services
+            services.AddScoped<ITaxaDeJurosHelper, TaxaDeJurosHelper>();
             services.AddScoped<ITaxaDeJurosService, TaxaDeJurosService>();
             services.AddScoped<ITaxaDeJurosRepository, TaxaDeJurosRepository>();
             services.AddScoped<ITaxaDeJurosService, TaxaDeJurosService>();
