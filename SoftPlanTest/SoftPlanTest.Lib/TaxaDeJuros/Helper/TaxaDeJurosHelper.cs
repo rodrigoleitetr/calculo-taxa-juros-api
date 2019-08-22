@@ -26,7 +26,7 @@ namespace SoftPlanTest.Lib.TaxaDeJuros.Helper
         /// Executa um request a uma api "externa" (para efeito do teste) e retorna o valor
         /// </summary>
         /// <returns></returns>
-        private async Task<decimal> GetTaxaDeJuros()
+        public async Task<decimal> GetTaxaDeJuros()
         {
             if (string.IsNullOrEmpty(_calculoTaxaDeJurosApiConfig.TaxaDeJurosServiceUrl))
                 throw new InvalidOperationException(string.Format("A configuração {0} não pode estar vazia no arquivo de configurações.", nameof(_calculoTaxaDeJurosApiConfig.TaxaDeJurosServiceUrl)));
@@ -42,11 +42,6 @@ namespace SoftPlanTest.Lib.TaxaDeJuros.Helper
 
                 return result.ValorTaxaJuros;
             }
-        }
-
-        Task<decimal> ITaxaDeJurosHelper.GetTaxaDeJuros()
-        {
-            throw new NotImplementedException();
         }
     }
 }
